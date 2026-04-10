@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>送料シミュレーター</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F7F5F0;
+  --surface: #FFFFFF;
+  --border: #E2DDD5;
+  --border-strong: #C8C0B4;
+  --text: #1A1714;
+  --text-sub: #6B6560;
+  --text-hint: #9E9890;
+  --accent: #2D5A3D;
+  --accent-light: #EAF2ED;
+  --accent-mid: #4A8C5F;
+  --info: #1E3A5F;
+  --info-light: #E8EEF5;
+  --warn: #8B4513;
+  --warn-light: #FDF3EC;
+  --radius: 10px;
+  --radius-lg: 16px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Noto Sans JP', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  padding: 0 0 60px;
+}
+header {
+  background: var(--accent);
+  padding: 28px 24px 24px;
+  color: white;
+}
+header h1 {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  margin-bottom: 4px;
+}
+header p {
+  font-size: 13px;
+  opacity: 0.8;
+  line-height: 1.6;
+}
+.container { max-width: 560px; margin: 0 auto; padding: 20px 16px; }
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  margin-bottom: 14px;
+}
+.card-title {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-hint);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.field { margin-bottom: 14px; }
+.field:last-child { margin-bottom: 0; }
+.field label {
+  display: block;
+  font-size: 13px;
+  color: var(--text-sub);
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+select {
+  width: 100%;
+  height: 44px;
+  padding: 0 36px 0 14px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 15px;
+  font-family: inherit;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236B6560' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+select:focus { outline: none; border-color: var(--accent-mid); }
+.pref-note {
+  display: none;
+  font-size: 12px;
+  color: var(--accent);
+  background: var(--accent-light);
+  border-radius: 6px;
+  padding: 8px 12px;
+  margin-top: 8px;
+  font-weight: 500;
+}
+.intl-amount {
+  font-family: 'DM Mono', monospace;
+  font-size: 32px;
+  font-weight: 500;
+  color: var(--text);
+  margin: 4px 0 6px;
+}
+.intl-break {
+  font-size: 12px;
+  color: var(--text-sub);
+}
+.method-grid { display: grid; gap: 10px; }
+.method-card {
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px;
+  cursor: pointer;
+  transition: all 0.15s;
+  position: relative;
+}
+.method-card:hover { border-color: var(--border-strong); }
+.method-card.selected {
+  border-color: var(--accent);
+  background: var(--accent-light);
+}
+.method-card.featured { border-color: var(--accent-mid); }
+.badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--accent);
+  background: var(--accent-light);
+  border: 1px solid var(--accent-mid);
+  border-radius: 4px;
+  padding: 2px 7px;
+  margin-bottom: 8px;
+  letter-spacing: 0.05em;
+}
+.method-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.method-price {
+  font-family: 'DM Mono', monospace;
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.method-note {
+  font-size: 11px;
+  color: var(--text-sub);
+  line-height: 1.6;
+}
+.total-box {
+  background: var(--info-light);
+  border: 1.5px solid var(--info);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  margin-bottom: 14px;
+}
+.total-label {
+  font-size: 12px;
+  color: var(--info);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  margin-bottom: 8px;
+}
+.total-amount {
+  font-family: 'DM Mono', monospace;
+  font-size: 38px;
+  font-weight: 500;
+  color: var(--info);
+  margin-bottom: 4px;
+}
+.total-sub { font-size: 12px; color: var(--info); opacity: 0.8; }
+.divider { border: none; border-top: 1px solid var(--border); margin: 14px 0; }
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+}
+.detail-row:not(:last-child) { border-bottom: 1px solid var(--border); }
+.detail-key { font-size: 13px; color: var(--text-sub); }
+.detail-val {
+  font-family: 'DM Mono', monospace;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text);
+}
+.furi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+.furi-box {
+  background: var(--warn-light);
+  border: 1px solid #D4956A;
+  border-radius: var(--radius);
+  padding: 14px;
+}
+.furi-box.main {
+  background: var(--info-light);
+  border-color: var(--info);
+}
+.furi-label { font-size: 11px; color: var(--text-sub); margin-bottom: 4px; font-weight: 500; }
+.furi-amount {
+  font-family: 'DM Mono', monospace;
+  font-size: 22px;
+  font-weight: 500;
+}
+.furi-box.main .furi-amount { color: var(--info); }
+.furi-box:not(.main) .furi-amount { color: var(--warn); }
+.furi-note { font-size: 10px; color: var(--text-hint); margin-top: 4px; line-height: 1.5; }
+footer {
+  text-align: center;
+  font-size: 11px;
+  color: var(--text-hint);
+  padding: 20px 16px 0;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📦 送料シミュレーター</h1>
+  <p>購入内容とお届け先を選ぶと、送料の目安が確認できます。</p>
+</header>
+
+<div class="container">
+
+  <div class="card">
+    <p class="card-title">Step 1 　購入内容・お届け先</p>
+    <div class="field">
+      <label>雑誌の冊数</label>
+      <select id="magCount">
+        <option value="0">0冊（特典のみ）</option>
+        <option value="1" selected>1冊</option>
+        <option value="2">2冊</option>
+        <option value="3">3冊</option>
+        <option value="4">4冊</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>特典セット数　※A～Cセットの購入者は”なし”を選択</label>
+      <select id="bonusCount">
+        <option value="0" selected>なし</option>
+        <option value="1">1セット</option>
+        <option value="2">2セット</option>
+        <option value="3">3セット</option>
+        <option value="4">4セット</option>
+      </select>
+    </div>
+    <div class="field" id="prefField" style="display:none">
+      <label>お届け先（都道府県）</label>
+      <select id="prefSelect"></select>
+      <div class="pref-note" id="prefNote"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <p class="card-title">Step 2 　国際送料（按分）</p>
+    <div class="intl-amount" id="intlFee">¥390</div>
+    <div class="intl-break" id="intlBreak"></div>
+  </div>
+
+  <div class="card">
+    <p class="card-title">Step 3 　国内配送方法を選ぶ</p>
+    <div class="method-grid" id="methodGrid"></div>
+  </div>
+
+  <div id="totalArea"></div>
+
+  <footer>
+    ※ 表示金額はすべて目安です。梱包費・配送料は変動する場合があります。<br>
+    ※ 宅急便料金は東京都発・2025年10月改定版に基づきます。
+  </footer>
+
+</div>
+
+<script>
+const INTL = {mag:[0,390,780,1170,1560], bonus:[0,5,10,15,20]};
+const AREA_FEE_80 = {
+  hokkaido:1740, kitatohoku:1480, minamitohoku:1350,
+  kanto:1230, shinetu:1230, hokuriku:1230, chubu:1230,
+  kansai:1350, chugoku:1480, shikoku:1480,
+  kyushu:1740, okinawa:2070
+};
+const AREA_LABEL = {
+  hokkaido:'北海道', kitatohoku:'北東北', minamitohoku:'南東北',
+  kanto:'関東', shinetu:'信越', hokuriku:'北陸', chubu:'中部',
+  kansai:'関西', chugoku:'中国', shikoku:'四国', kyushu:'九州', okinawa:'沖縄'
+};
+const PREFS = [
+  {n:'北海道',a:'hokkaido'},
+  {n:'青森県',a:'kitatohoku'},{n:'秋田県',a:'kitatohoku'},{n:'岩手県',a:'kitatohoku'},
+  {n:'宮城県',a:'minamitohoku'},{n:'山形県',a:'minamitohoku'},{n:'福島県',a:'minamitohoku'},
+  {n:'茨城県',a:'kanto'},{n:'栃木県',a:'kanto'},{n:'群馬県',a:'kanto'},
+  {n:'埼玉県',a:'kanto'},{n:'千葉県',a:'kanto'},{n:'東京都',a:'kanto'},
+  {n:'神奈川県',a:'kanto'},{n:'山梨県',a:'kanto'},
+  {n:'新潟県',a:'shinetu'},{n:'長野県',a:'shinetu'},
+  {n:'富山県',a:'hokuriku'},{n:'石川県',a:'hokuriku'},{n:'福井県',a:'hokuriku'},
+  {n:'静岡県',a:'chubu'},{n:'愛知県',a:'chubu'},{n:'三重県',a:'chubu'},{n:'岐阜県',a:'chubu'},
+  {n:'大阪府',a:'kansai'},{n:'京都府',a:'kansai'},{n:'滋賀県',a:'kansai'},
+  {n:'奈良県',a:'kansai'},{n:'和歌山県',a:'kansai'},{n:'兵庫県',a:'kansai'},
+  {n:'岡山県',a:'chugoku'},{n:'広島県',a:'chugoku'},{n:'山口県',a:'chugoku'},
+  {n:'鳥取県',a:'chugoku'},{n:'島根県',a:'chugoku'},
+  {n:'香川県',a:'shikoku'},{n:'徳島県',a:'shikoku'},{n:'愛媛県',a:'shikoku'},{n:'高知県',a:'shikoku'},
+  {n:'福岡県',a:'kyushu'},{n:'佐賀県',a:'kyushu'},{n:'長崎県',a:'kyushu'},
+  {n:'熊本県',a:'kyushu'},{n:'大分県',a:'kyushu'},{n:'宮崎県',a:'kyushu'},{n:'鹿児島県',a:'kyushu'},
+  {n:'沖縄県',a:'okinawa'},
+];
+
+const sel = document.getElementById('prefSelect');
+PREFS.forEach((p,i)=>{
+  const o = document.createElement('option');
+  o.value = i; o.textContent = p.n;
+  if(p.n==='東京都') o.selected = true;
+  sel.appendChild(o);
+});
+
+let selectedKey = null;
+
+function getArea(){ return PREFS[parseInt(sel.value)].a; }
+function packCost(mag){ return mag===0?30:100; }
+function calcIntl(mag,bonus){ return INTL.mag[mag]+INTL.bonus[bonus]; }
+
+function getMethods(mag){
+  const fee = AREA_FEE_80[getArea()];
+  const furiFee = Math.ceil(fee/0.95);
+  if(mag===0) return [
+    {key:'mini',  name:'ミニレター',          delivery:63,  furi:false, note:'追跡なし・補償なし　郵便ポスト投函'},
+    {key:'click', name:'クリックポスト',      delivery:185, furi:false, note:'追跡あり・全国均一　自宅ラベル印刷→ポスト投函', featured:true},
+  ];
+  if(mag===1) return [
+    {key:'letter',name:'レターパックプラス',  delivery:600, furi:false, note:'追跡あり・全国均一　対面受け取り', featured:true},
+    {key:'furi',  name:'宅急便（Yahoo!フリマ）', delivery:fee, furiDisplay:furiFee, furi:true, note:'追跡あり・匿名配送　手数料5%込みの出品価格'},
+    {key:'takku', name:'宅急便（直接）',      delivery:fee, furi:false, note:'追跡あり　お届け先エリアの料金'},
+  ];
+  return [
+    {key:'furi',  name:'宅急便（Yahoo!フリマ）', delivery:fee, furiDisplay:furiFee, furi:true, note:'追跡あり・匿名配送　手数料5%込みの出品価格', featured:true},
+    {key:'takku', name:'宅急便（直接）',      delivery:fee, furi:false, note:'追跡あり　お届け先エリアの料金'},
+  ];
+}
+
+function render(){
+  const mag   = parseInt(document.getElementById('magCount').value);
+  const bonus = parseInt(document.getElementById('bonusCount').value);
+  const intl  = calcIntl(mag,bonus);
+  const pack  = packCost(mag);
+
+  document.getElementById('intlFee').textContent = '¥'+intl.toLocaleString();
+  let bt = `雑誌${mag}冊 ¥${INTL.mag[mag].toLocaleString()}`;
+  bt += bonus>0 ? ` ＋ 特典${bonus}セット ¥${INTL.bonus[bonus]}` : '　特典なし ¥0';
+  document.getElementById('intlBreak').textContent = bt;
+
+  const methods = getMethods(mag);
+  const grid = document.getElementById('methodGrid');
+  grid.innerHTML = '';
+  grid.style.gridTemplateColumns = methods.length===3?'1fr 1fr 1fr':'1fr 1fr';
+
+  let defaultM = null;
+  methods.forEach(m=>{
+    const isSelected = selectedKey ? m.key===selectedKey : !!m.featured;
+    const card = document.createElement('div');
+    card.className = 'method-card'+(m.featured?' featured':'')+(isSelected?' selected':'');
+    const dispPrice = m.furi ? m.furiDisplay : m.delivery;
+    card.innerHTML = `
+      ${m.featured?'<div class="badge">おすすめ</div>':''}
+      <div class="method-name">${m.name}</div>
+      <div class="method-price">¥${dispPrice.toLocaleString()}</div>
+      <div class="method-note">${m.note}</div>
+    `;
+    card.addEventListener('click',()=>{
+      selectedKey = m.key;
+      render();
+    });
+    grid.appendChild(card);
+    if(isSelected) defaultM = m;
+  });
+
+  if(!defaultM){ defaultM=methods[0]; selectedKey=methods[0].key; }
+
+  // 都道府県表示判定（宅急便系：furi or takku の時のみ表示）
+  const isTakkyubin = (selectedKey === 'furi' || selectedKey === 'takku');
+  const prefField = document.getElementById('prefField');
+  
+  if(isTakkyubin){
+    prefField.style.display = 'block';
+    const note = document.getElementById('prefNote');
+    const area = getArea();
+    note.style.display = 'block';
+    note.textContent = `${AREA_LABEL[area]}エリア：宅急便80サイズ ¥${AREA_FEE_80[area].toLocaleString()}`;
+  } else {
+    prefField.style.display = 'none';
+  }
+
+  renderTotal(defaultM,intl,pack);
+}
+
+function renderTotal(m,intl,pack){
+  const isTakkyubin = (m.key === 'furi' || m.key === 'takku');
+  const area2 = isTakkyubin ? AREA_LABEL[getArea()] : '';
+  const el = document.getElementById('totalArea');
+
+  if(m.furi){
+    const preFuri = intl+pack;
+    const furiDisplay = m.furiDisplay;
+    const grand = preFuri+furiDisplay;
+    el.innerHTML = `
+      <div class="furi-grid">
+        <div class="furi-box main">
+          <div class="furi-label">先振込金額（フリマ外）</div>
+          <div class="furi-amount">¥${preFuri.toLocaleString()}</div>
+          <div class="furi-note">国際送料 ¥${intl.toLocaleString()} ＋ 梱包費 ¥${pack}</div>
+        </div>
+        <div class="furi-box">
+          <div class="furi-label">Yahoo!フリマ出品価格</div>
+          <div class="furi-amount">¥${furiDisplay.toLocaleString()}</div>
+          <div class="furi-note">送料 ¥${m.delivery.toLocaleString()} ÷ 0.95（手数料5%込み）</div>
+        </div>
+      </div>
+      <div class="total-box">
+        <div class="total-label">参加者の実質負担合計（目安）</div>
+        <div class="total-amount">¥${grand.toLocaleString()}</div>
+        <div class="total-sub">先振込 ¥${preFuri.toLocaleString()} ＋ フリマ購入 ¥${furiDisplay.toLocaleString()}</div>
+      </div>`;
+  } else {
+    const grand = intl+m.delivery+pack;
+    el.innerHTML = `
+      <div class="total-box">
+        <div class="total-label">合計請求金額</div>
+        <div class="total-amount">¥${grand.toLocaleString()}</div>
+      </div>
+      <div class="card">
+        <p class="card-title">内訳</p>
+        <div class="detail-row"><span class="detail-key">国際送料</span><span class="detail-val">¥${intl.toLocaleString()}</span></div>
+        <div class="detail-row"><span class="detail-key">国内配送${area2?'（'+area2+'）':''}</span><span class="detail-val">¥${m.delivery.toLocaleString()}</span></div>
+        <div class="detail-row"><span class="detail-key">梱包費</span><span class="detail-val">¥${pack.toLocaleString()}</span></div>
+        <div class="divider"></div>
+        <div class="detail-row"><span class="detail-key" style="font-weight:700;color:var(--text)">合計</span><span class="detail-val" style="font-size:18px">¥${grand.toLocaleString()}</span></div>
+      </div>`;
+  }
+}
+
+document.getElementById('magCount').addEventListener('change',()=>{selectedKey=null;render();});
+document.getElementById('bonusCount').addEventListener('change',render);
+document.getElementById('prefSelect').addEventListener('change',render);
+render();
+</script>
+</body>
+</html>
