@@ -98,7 +98,7 @@ select:focus { outline: none; border-color: var(--accent-mid); }
   background: var(--accent-light);
   border-radius: 6px;
   padding: 8px 12px;
-  margin-top: 8px;
+  margin-bottom: 14px;
   font-weight: 500;
 }
 .intl-amount {
@@ -232,7 +232,7 @@ footer {
 <div class="container">
 
   <div class="card">
-    <p class="card-title">Step 1 　購入内容・お届け先</p>
+    <p class="card-title">Step 1 　購入内容</p>
     <div class="field">
       <label>雑誌の冊数</label>
       <select id="magCount">
@@ -253,11 +253,6 @@ footer {
         <option value="4">4セット</option>
       </select>
     </div>
-    <div class="field" id="prefField" style="display:none">
-      <label>お届け先（都道府県）</label>
-      <select id="prefSelect"></select>
-      <div class="pref-note" id="prefNote"></div>
-    </div>
   </div>
 
   <div class="card">
@@ -267,7 +262,16 @@ footer {
   </div>
 
   <div class="card">
-    <p class="card-title">Step 3 　国内配送方法を選ぶ</p>
+    <p class="card-title">Step 3 　国内配送方法</p>
+    
+    <div id="prefField" style="display:none; margin-bottom:20px;">
+      <div class="field">
+        <label>お届け先（都道府県）</label>
+        <select id="prefSelect"></select>
+      </div>
+      <div class="pref-note" id="prefNote"></div>
+    </div>
+
     <div class="method-grid" id="methodGrid"></div>
   </div>
 
@@ -383,7 +387,7 @@ function render(){
 
   if(!defaultM){ defaultM=methods[0]; selectedKey=methods[0].key; }
 
-  // 都道府県表示判定（宅急便系：furi or takku の時のみ表示）
+  // 都道府県表示判定（Step 3 内で表示・非表示を切り替え）
   const isTakkyubin = (selectedKey === 'furi' || selectedKey === 'takku');
   const prefField = document.getElementById('prefField');
   
