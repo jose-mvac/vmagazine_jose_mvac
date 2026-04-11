@@ -300,17 +300,17 @@ function getMethods(mag){
   const furiDisplay = Math.ceil(furiFee80/0.95);
 
   if(mag===0) return [
-    {key:'mini',  name:'ミニレター',            delivery:63,       furi:false, note:'追跡なし・補償なし　郵便ポスト投函'},
-    {key:'click', name:'クリックポスト',         delivery:185,      furi:false, note:'追跡あり・全国均一　自宅ラベル印刷→ポスト投函', featured:true},
+    {key:'mini',  name:'ミニレター',            delivery:63,       furi:false, note:'追跡なし・補償なし　'},
+    {key:'click', name:'クリックポスト',         delivery:185,      furi:false, note:'追跡あり・全国均一　', featured:true},
   ];
   if(mag===1) return [
-    {key:'letter',name:'レターパックプラス',     delivery:600,      furi:false, note:'追跡あり・全国均一　対面受け取り', featured:true},
-    {key:'furi',  name:'宅急便（Yahoo!フリマ）', delivery:furiFee80, furiDisplay:furiDisplay, furi:true, note:'追跡あり・匿名配送　全国均一'},
-    {key:'takku', name:'宅急便（直接）',         delivery:fee80,    furi:false, note:'追跡あり　都道府県により料金が変わります', hasPref:true},
+    {key:'letter',name:'レターパックプラス',     delivery:600,      furi:false, note:'追跡あり・全国均一　対面受け取り　寸法ギリギリのため折れリスクあり'},
+    {key:'furi',  name:'宅急便（Yahoo!フリマ）', delivery:furiFee80, furiDisplay:furiDisplay, furi:true, note:'追跡あり・匿名配送　全国均一　配送にお時間をいただく場合があります。', featured:true},
+    {key:'takku', name:'宅急便（着払い）',         delivery:fee80,    furi:false, note:'追跡あり　都道府県により料金が変わります', hasPref:true},
   ];
   return [
-    {key:'furi',  name:'宅急便（Yahoo!フリマ）', delivery:furiFee80, furiDisplay:furiDisplay, furi:true, note:'追跡あり・匿名配送　全国均一', featured:true},
-    {key:'takku', name:'宅急便（直接）',         delivery:fee80,    furi:false, note:'追跡あり　都道府県により料金が変わります', hasPref:true},
+    {key:'furi',  name:'宅急便（Yahoo!フリマ）', delivery:furiFee80, furiDisplay:furiDisplay, furi:true, note:'追跡あり・匿名配送　全国均一　配送にお時間をいただく場合があります。', featured:true},
+    {key:'takku', name:'宅急便（着払い）',         delivery:fee80,    furi:false, note:'追跡あり　都道府県により料金が変わります', hasPref:true},
   ];
 }
 
