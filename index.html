@@ -19,8 +19,11 @@
   --accent-mid: #4A8C5F;
   --info: #1E3A5F;
   --info-light: #E8EEF5;
-  --warn: #8B4513;
-  --warn-light: #FDF3EC;
+  --warn: #7A3B10;
+  --warn-light: #FDF0E8;
+  --warn-border: #C87040;
+  --paypay: #D0021B;
+  --paypay-light: #FFF0F2;
   --radius: 10px;
   --radius-lg: 16px;
 }
@@ -37,17 +40,8 @@ header {
   padding: 28px 24px 24px;
   color: white;
 }
-header h1 {
-  font-size: 20px;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  margin-bottom: 4px;
-}
-header p {
-  font-size: 13px;
-  opacity: 0.8;
-  line-height: 1.6;
-}
+header h1 { font-size: 20px; font-weight: 700; letter-spacing: 0.02em; margin-bottom: 4px; }
+header p { font-size: 13px; opacity: 0.8; line-height: 1.6; }
 .container { max-width: 560px; margin: 0 auto; padding: 20px 16px; }
 .card {
   background: var(--surface);
@@ -66,13 +60,7 @@ header p {
 }
 .field { margin-bottom: 14px; }
 .field:last-child { margin-bottom: 0; }
-.field label {
-  display: block;
-  font-size: 13px;
-  color: var(--text-sub);
-  margin-bottom: 6px;
-  font-weight: 500;
-}
+.field label { display: block; font-size: 13px; color: var(--text-sub); margin-bottom: 6px; font-weight: 500; }
 select {
   width: 100%;
   height: 44px;
@@ -91,16 +79,6 @@ select {
   transition: border-color 0.15s;
 }
 select:focus { outline: none; border-color: var(--accent-mid); }
-.pref-note {
-  display: none;
-  font-size: 12px;
-  color: var(--accent);
-  background: var(--accent-light);
-  border-radius: 6px;
-  padding: 8px 12px;
-  margin-bottom: 14px;
-  font-weight: 500;
-}
 .intl-amount {
   font-family: 'DM Mono', monospace;
   font-size: 32px;
@@ -108,10 +86,7 @@ select:focus { outline: none; border-color: var(--accent-mid); }
   color: var(--text);
   margin: 4px 0 6px;
 }
-.intl-break {
-  font-size: 12px;
-  color: var(--text-sub);
-}
+.intl-break { font-size: 12px; color: var(--text-sub); }
 .method-grid { display: grid; gap: 10px; }
 .method-card {
   border: 1.5px solid var(--border);
@@ -119,13 +94,9 @@ select:focus { outline: none; border-color: var(--accent-mid); }
   padding: 14px;
   cursor: pointer;
   transition: all 0.15s;
-  position: relative;
 }
 .method-card:hover { border-color: var(--border-strong); }
-.method-card.selected {
-  border-color: var(--accent);
-  background: var(--accent-light);
-}
+.method-card.selected { border-color: var(--accent); background: var(--accent-light); }
 .method-card.featured { border-color: var(--accent-mid); }
 .badge {
   display: inline-block;
@@ -139,24 +110,29 @@ select:focus { outline: none; border-color: var(--accent-mid); }
   margin-bottom: 8px;
   letter-spacing: 0.05em;
 }
-.method-name {
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--text);
-  margin-bottom: 4px;
+.method-name { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+.method-price { font-family: 'DM Mono', monospace; font-size: 22px; font-weight: 500; color: var(--text); margin-bottom: 4px; }
+.method-note { font-size: 11px; color: var(--text-sub); line-height: 1.6; }
+
+/* 都道府県パネル（宅急便直接選択時のみ表示） */
+.pref-panel {
+  display: none;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px;
+  margin-top: 10px;
 }
-.method-price {
-  font-family: 'DM Mono', monospace;
-  font-size: 22px;
+.pref-panel.visible { display: block; }
+.pref-panel label { display: block; font-size: 12px; color: var(--text-sub); margin-bottom: 6px; font-weight: 500; }
+.pref-note {
+  font-size: 12px;
+  color: var(--accent);
   font-weight: 500;
-  color: var(--text);
-  margin-bottom: 4px;
+  margin-top: 8px;
 }
-.method-note {
-  font-size: 11px;
-  color: var(--text-sub);
-  line-height: 1.6;
-}
+
+/* 合計ボックス */
 .total-box {
   background: var(--info-light);
   border: 1.5px solid var(--info);
@@ -164,69 +140,57 @@ select:focus { outline: none; border-color: var(--accent-mid); }
   padding: 20px;
   margin-bottom: 14px;
 }
-.total-label {
-  font-size: 12px;
-  color: var(--info);
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  margin-bottom: 8px;
-}
-.total-amount {
-  font-family: 'DM Mono', monospace;
-  font-size: 38px;
-  font-weight: 500;
-  color: var(--info);
-  margin-bottom: 4px;
-}
+.total-label { font-size: 12px; color: var(--info); font-weight: 700; letter-spacing: 0.05em; margin-bottom: 8px; }
+.total-amount { font-family: 'DM Mono', monospace; font-size: 38px; font-weight: 500; color: var(--info); margin-bottom: 4px; }
 .total-sub { font-size: 12px; color: var(--info); opacity: 0.8; }
+
+/* 内訳 */
 .divider { border: none; border-top: 1px solid var(--border); margin: 14px 0; }
-.detail-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 6px 0;
-}
+.detail-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; }
 .detail-row:not(:last-child) { border-bottom: 1px solid var(--border); }
 .detail-key { font-size: 13px; color: var(--text-sub); }
-.detail-val {
-  font-family: 'DM Mono', monospace;
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--text);
-}
-.furi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
-.furi-box {
-  background: var(--warn-light);
-  border: 1px solid #D4956A;
-  border-radius: var(--radius);
-  padding: 14px;
-}
-.furi-box.main {
-  background: var(--info-light);
-  border-color: var(--info);
-}
-.furi-label { font-size: 11px; color: var(--text-sub); margin-bottom: 4px; font-weight: 500; }
-.furi-amount {
-  font-family: 'DM Mono', monospace;
-  font-size: 22px;
-  font-weight: 500;
-}
-.furi-box.main .furi-amount { color: var(--info); }
-.furi-box:not(.main) .furi-amount { color: var(--warn); }
-.furi-note { font-size: 10px; color: var(--text-hint); margin-top: 4px; line-height: 1.5; }
-footer {
-  text-align: center;
+.detail-val { font-family: 'DM Mono', monospace; font-size: 14px; font-weight: 500; color: var(--text); }
+
+/* 入金方法パネル */
+.payment-section { margin-bottom: 14px; }
+.payment-title {
   font-size: 11px;
+  font-weight: 700;
   color: var(--text-hint);
-  padding: 20px 16px 0;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
 }
+.payment-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.payment-box {
+  border-radius: var(--radius);
+  padding: 16px;
+  border: 1.5px solid;
+}
+.payment-box.paypay {
+  background: var(--paypay-light);
+  border-color: var(--paypay);
+}
+.payment-box.furi {
+  background: var(--warn-light);
+  border-color: var(--warn-border);
+}
+.payment-box-label { font-size: 11px; font-weight: 700; margin-bottom: 4px; }
+.payment-box.paypay .payment-box-label { color: var(--paypay); }
+.payment-box.furi .payment-box-label { color: var(--warn); }
+.payment-box-amount { font-family: 'DM Mono', monospace; font-size: 24px; font-weight: 500; margin-bottom: 4px; }
+.payment-box.paypay .payment-box-amount { color: var(--paypay); }
+.payment-box.furi .payment-box-amount { color: var(--warn); }
+.payment-box-note { font-size: 10px; color: var(--text-hint); line-height: 1.5; }
+
+footer { text-align: center; font-size: 11px; color: var(--text-hint); padding: 20px 16px 0; line-height: 1.8; }
 </style>
 </head>
 <body>
 
 <header>
   <h1>📦 送料シミュレーター</h1>
-  <p>購入内容とお届け先を選ぶと、送料の目安が確認できます。</p>
+  <p>購入内容と配送方法を選ぶと、送料の目安が確認できます。</p>
 </header>
 
 <div class="container">
@@ -244,7 +208,7 @@ footer {
       </select>
     </div>
     <div class="field">
-      <label>特典セット数　※A～Cセットの購入者は”なし”を選択</label>
+      <label>特典セット数</label>
       <select id="bonusCount">
         <option value="0" selected>なし</option>
         <option value="1">1セット</option>
@@ -262,24 +226,22 @@ footer {
   </div>
 
   <div class="card">
-    <p class="card-title">Step 3 　国内配送方法</p>
-    
-    <div id="prefField" style="display:none; margin-bottom:20px;">
-      <div class="field">
-        <label>お届け先（都道府県）</label>
-        <select id="prefSelect"></select>
-      </div>
+    <p class="card-title">Step 3 　国内配送方法を選ぶ</p>
+    <div class="method-grid" id="methodGrid"></div>
+
+    <!-- 宅急便（直接）選択時のみ表示 -->
+    <div class="pref-panel" id="prefPanel">
+      <label>お届け先（都道府県）</label>
+      <select id="prefSelect"></select>
       <div class="pref-note" id="prefNote"></div>
     </div>
-
-    <div class="method-grid" id="methodGrid"></div>
   </div>
 
   <div id="totalArea"></div>
 
   <footer>
     ※ 表示金額はすべて目安です。梱包費・配送料は変動する場合があります。<br>
-    ※ 宅急便料金は東京都発・2025年10月改定版に基づきます。
+    ※ 宅急便料金は東京都発・80サイズ・2025年10月改定版に基づきます。
   </footer>
 
 </div>
@@ -317,6 +279,7 @@ const PREFS = [
   {n:'沖縄県',a:'okinawa'},
 ];
 
+// 都道府県プルダウン生成
 const sel = document.getElementById('prefSelect');
 PREFS.forEach((p,i)=>{
   const o = document.createElement('option');
@@ -332,20 +295,22 @@ function packCost(mag){ return mag===0?30:100; }
 function calcIntl(mag,bonus){ return INTL.mag[mag]+INTL.bonus[bonus]; }
 
 function getMethods(mag){
-  const fee = AREA_FEE_80[getArea()];
-  const furiFee = Math.ceil(fee/0.95);
+  const fee80 = AREA_FEE_80[getArea()]; // 宅急便直接用（都道府県連動）
+  const furiFee80 = 850; // フリマは全国均一80サイズ
+  const furiDisplay = Math.ceil(furiFee80/0.95);
+
   if(mag===0) return [
-    {key:'mini',  name:'ミニレター',          delivery:63,  furi:false, note:'追跡なし・補償なし　郵便ポスト投函'},
-    {key:'click', name:'クリックポスト',      delivery:185, furi:false, note:'追跡あり・全国均一　自宅ラベル印刷→ポスト投函', featured:true},
+    {key:'mini',  name:'ミニレター',            delivery:63,       furi:false, note:'追跡なし・補償なし　郵便ポスト投函'},
+    {key:'click', name:'クリックポスト',         delivery:185,      furi:false, note:'追跡あり・全国均一　自宅ラベル印刷→ポスト投函', featured:true},
   ];
   if(mag===1) return [
-    {key:'letter',name:'レターパックプラス',  delivery:600, furi:false, note:'追跡あり・全国均一　対面受け取り', featured:true},
-    {key:'furi',  name:'宅急便（Yahoo!フリマ）', delivery:fee, furiDisplay:furiFee, furi:true, note:'追跡あり・匿名配送　手数料5%込みの出品価格'},
-    {key:'takku', name:'宅急便（直接）',      delivery:fee, furi:false, note:'追跡あり　お届け先エリアの料金'},
+    {key:'letter',name:'レターパックプラス',     delivery:600,      furi:false, note:'追跡あり・全国均一　対面受け取り', featured:true},
+    {key:'furi',  name:'宅急便（Yahoo!フリマ）', delivery:furiFee80, furiDisplay:furiDisplay, furi:true, note:'追跡あり・匿名配送　全国均一'},
+    {key:'takku', name:'宅急便（直接）',         delivery:fee80,    furi:false, note:'追跡あり　都道府県により料金が変わります', hasPref:true},
   ];
   return [
-    {key:'furi',  name:'宅急便（Yahoo!フリマ）', delivery:fee, furiDisplay:furiFee, furi:true, note:'追跡あり・匿名配送　手数料5%込みの出品価格', featured:true},
-    {key:'takku', name:'宅急便（直接）',      delivery:fee, furi:false, note:'追跡あり　お届け先エリアの料金'},
+    {key:'furi',  name:'宅急便（Yahoo!フリマ）', delivery:furiFee80, furiDisplay:furiDisplay, furi:true, note:'追跡あり・匿名配送　全国均一', featured:true},
+    {key:'takku', name:'宅急便（直接）',         delivery:fee80,    furi:false, note:'追跡あり　都道府県により料金が変わります', hasPref:true},
   ];
 }
 
@@ -355,15 +320,17 @@ function render(){
   const intl  = calcIntl(mag,bonus);
   const pack  = packCost(mag);
 
+  // 国際送料
   document.getElementById('intlFee').textContent = '¥'+intl.toLocaleString();
   let bt = `雑誌${mag}冊 ¥${INTL.mag[mag].toLocaleString()}`;
-  bt += bonus>0 ? ` ＋ 特典${bonus}セット ¥${INTL.bonus[bonus]}` : '　特典なし ¥0';
+  bt += bonus>0 ? `　＋　特典${bonus}セット ¥${INTL.bonus[bonus]}` : '　特典なし ¥0';
   document.getElementById('intlBreak').textContent = bt;
 
+  // 配送方法カード
   const methods = getMethods(mag);
   const grid = document.getElementById('methodGrid');
   grid.innerHTML = '';
-  grid.style.gridTemplateColumns = methods.length===3?'1fr 1fr 1fr':'1fr 1fr';
+  grid.style.gridTemplateColumns = methods.length===3 ? '1fr 1fr 1fr' : '1fr 1fr';
 
   let defaultM = null;
   methods.forEach(m=>{
@@ -379,79 +346,107 @@ function render(){
     `;
     card.addEventListener('click',()=>{
       selectedKey = m.key;
-      render();
+      document.querySelectorAll('.method-card').forEach(c=>c.classList.remove('selected'));
+      card.classList.add('selected');
+      // 都道府県パネルの表示切替
+      updatePrefPanel(m);
+      renderTotal(m, calcIntl(
+        parseInt(document.getElementById('magCount').value),
+        parseInt(document.getElementById('bonusCount').value)
+      ), packCost(parseInt(document.getElementById('magCount').value)));
     });
     grid.appendChild(card);
     if(isSelected) defaultM = m;
   });
 
   if(!defaultM){ defaultM=methods[0]; selectedKey=methods[0].key; }
-
-  // 都道府県表示判定（Step 3 内で表示・非表示を切り替え）
-  const isTakkyubin = (selectedKey === 'furi' || selectedKey === 'takku');
-  const prefField = document.getElementById('prefField');
-  
-  if(isTakkyubin){
-    prefField.style.display = 'block';
-    const note = document.getElementById('prefNote');
-    const area = getArea();
-    note.style.display = 'block';
-    note.textContent = `${AREA_LABEL[area]}エリア：宅急便80サイズ ¥${AREA_FEE_80[area].toLocaleString()}`;
-  } else {
-    prefField.style.display = 'none';
-  }
-
-  renderTotal(defaultM,intl,pack);
+  updatePrefPanel(defaultM);
+  renderTotal(defaultM, intl, pack);
 }
 
-function renderTotal(m,intl,pack){
-  const isTakkyubin = (m.key === 'furi' || m.key === 'takku');
-  const area2 = isTakkyubin ? AREA_LABEL[getArea()] : '';
+function updatePrefPanel(m){
+  const panel = document.getElementById('prefPanel');
+  if(m.hasPref){
+    panel.classList.add('visible');
+    updatePrefNote();
+  } else {
+    panel.classList.remove('visible');
+  }
+}
+
+function updatePrefNote(){
+  const area = getArea();
+  const fee  = AREA_FEE_80[area];
+  document.getElementById('prefNote').textContent =
+    `${AREA_LABEL[area]}エリア：¥${fee.toLocaleString()}`;
+}
+
+function renderTotal(m, intl, pack){
   const el = document.getElementById('totalArea');
 
+  // 宅急便（直接）の場合は都道府県連動
+  const delivery = m.hasPref ? AREA_FEE_80[getArea()] : m.delivery;
+  const grand = intl + delivery + pack;
+
+  // ── 共通：まず総額を出す ──
+  let html = `
+    <div class="total-box">
+      <div class="total-label">合計金額（目安）</div>
+      <div class="total-amount">¥${grand.toLocaleString()}</div>
+    </div>
+    <div class="card">
+      <p class="card-title">内訳</p>
+      <div class="detail-row"><span class="detail-key">国際送料</span><span class="detail-val">¥${intl.toLocaleString()}</span></div>
+      <div class="detail-row">
+        <span class="detail-key">国内配送${m.hasPref?'（'+AREA_LABEL[getArea()]+'エリア）':''}</span>
+        <span class="detail-val">¥${delivery.toLocaleString()}</span>
+      </div>
+      <div class="detail-row"><span class="detail-key">梱包費</span><span class="detail-val">¥${pack}</span></div>
+      <div class="divider"></div>
+      <div class="detail-row">
+        <span class="detail-key" style="font-weight:700;color:var(--text)">合計</span>
+        <span class="detail-val" style="font-size:18px">¥${grand.toLocaleString()}</span>
+      </div>
+    </div>
+  `;
+
+  // ── フリマ経由の場合：入金方法の分割を表示 ──
   if(m.furi){
-    const preFuri = intl+pack;
-    const furiDisplay = m.furiDisplay;
-    const grand = preFuri+furiDisplay;
-    el.innerHTML = `
-      <div class="furi-grid">
-        <div class="furi-box main">
-          <div class="furi-label">先振込金額（フリマ外）</div>
-          <div class="furi-amount">¥${preFuri.toLocaleString()}</div>
-          <div class="furi-note">国際送料 ¥${intl.toLocaleString()} ＋ 梱包費 ¥${pack}</div>
-        </div>
-        <div class="furi-box">
-          <div class="furi-label">Yahoo!フリマ出品価格</div>
-          <div class="furi-amount">¥${furiDisplay.toLocaleString()}</div>
-          <div class="furi-note">送料 ¥${m.delivery.toLocaleString()} ÷ 0.95（手数料5%込み）</div>
+    const furiAmount = 1000; // フリマサイトへ支払う固定額
+    const paypayAmount = grand - furiAmount;
+    html += `
+      <div class="payment-section">
+        <p class="payment-title">入金方法の内訳</p>
+        <div class="payment-grid">
+          <div class="payment-box paypay">
+            <div class="payment-box-label">PayPay送金</div>
+            <div class="payment-box-amount">¥${paypayAmount.toLocaleString()}</div>
+            <div class="payment-box-note">合計 ¥${grand.toLocaleString()} のうち<br>フリマ出品分を除いた金額</div>
+          </div>
+          <div class="payment-box furi">
+            <div class="payment-box-label">Yahoo!フリマ購入</div>
+            <div class="payment-box-amount">¥${furiAmount.toLocaleString()}</div>
+            <div class="payment-box-note">フリマサイト上で<br>¥1,000の商品を購入</div>
+          </div>
         </div>
       </div>
-      <div class="total-box">
-        <div class="total-label">参加者の実質負担合計（目安）</div>
-        <div class="total-amount">¥${grand.toLocaleString()}</div>
-        <div class="total-sub">先振込 ¥${preFuri.toLocaleString()} ＋ フリマ購入 ¥${furiDisplay.toLocaleString()}</div>
-      </div>`;
-  } else {
-    const grand = intl+m.delivery+pack;
-    el.innerHTML = `
-      <div class="total-box">
-        <div class="total-label">合計請求金額</div>
-        <div class="total-amount">¥${grand.toLocaleString()}</div>
-      </div>
-      <div class="card">
-        <p class="card-title">内訳</p>
-        <div class="detail-row"><span class="detail-key">国際送料</span><span class="detail-val">¥${intl.toLocaleString()}</span></div>
-        <div class="detail-row"><span class="detail-key">国内配送${area2?'（'+area2+'）':''}</span><span class="detail-val">¥${m.delivery.toLocaleString()}</span></div>
-        <div class="detail-row"><span class="detail-key">梱包費</span><span class="detail-val">¥${pack.toLocaleString()}</span></div>
-        <div class="divider"></div>
-        <div class="detail-row"><span class="detail-key" style="font-weight:700;color:var(--text)">合計</span><span class="detail-val" style="font-size:18px">¥${grand.toLocaleString()}</span></div>
-      </div>`;
+    `;
   }
+
+  el.innerHTML = html;
 }
 
-document.getElementById('magCount').addEventListener('change',()=>{selectedKey=null;render();});
-document.getElementById('bonusCount').addEventListener('change',render);
-document.getElementById('prefSelect').addEventListener('change',render);
+document.getElementById('magCount').addEventListener('change',()=>{ selectedKey=null; render(); });
+document.getElementById('bonusCount').addEventListener('change', render);
+document.getElementById('prefSelect').addEventListener('change',()=>{
+  updatePrefNote();
+  const methods = getMethods(parseInt(document.getElementById('magCount').value));
+  const current = methods.find(m=>m.key===selectedKey) || methods[0];
+  renderTotal(current,
+    calcIntl(parseInt(document.getElementById('magCount').value), parseInt(document.getElementById('bonusCount').value)),
+    packCost(parseInt(document.getElementById('magCount').value))
+  );
+});
 render();
 </script>
 </body>
