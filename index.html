@@ -212,28 +212,28 @@ footer { text-align: center; font-size: 11px; color: var(--text-hint); padding: 
     <div class="field">
       <label>雑誌の冊数<br>
         <span style="font-weight:400;font-size:12px;color:var(--text-hint)">
-          ※A/B/Cセット（雑誌＆特典）で申し込みの方。<br>
-          ※Cセットを1つ申し込まれた方は「2冊」を選択してください。
+          ※A/B/Cセット（雑誌＆特典）で申し込みの方。
         </span>
       </label>
       <select id="magCount">
-        <option value="0">0冊（特典のみ）</option>
-        <option value="1" selected>1冊</option>
-        <option value="2">2冊</option>
-        <option value="3">3冊</option>
-        <option value="4">4冊</option>
+        <option value="0">なし（特典のみで注文）</option>
+        <option value="1">AorB版 1セット</option>
+        <option value="2" selected>C版 1セット</option>
+        <option value="3">AorB版 1セット+C版 1セット</option>
+        <option value="4">C版2セット</option>
       </select>
     </div>
     <div class="field">
       <label>特典セット数<br>
-        <span style="font-weight:400;font-size:12px;color:var(--text-hint)">※雑誌は不要で特典だけを申し込まれた方</span>
+        <span style="font-weight:400;font-size:12px;color:var(--text-hint)">
+        　※雑誌は不要で特典だけを申し込まれた方<br>
+        　※A/B/Cセット（雑誌＆特典）のみを申し込みの方は”なし”を選択。
+        </span>
       </label>
       <select id="bonusCount">
         <option value="0" selected>なし</option>
-        <option value="1">1セット</option>
-        <option value="2">2セット</option>
-        <option value="3">3セット</option>
-        <option value="4">4セット</option>
+        <option value="1">特典のみC版1セット</option>
+        <option value="2">特典のみC版2セット</option>
       </select>
     </div>
   </div>
