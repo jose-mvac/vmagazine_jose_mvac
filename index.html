@@ -434,7 +434,7 @@ function renderDomesticCard(delivery, pack, m){
     <div class="domestic-item">
       <div class="domestic-item-label">梱包費</div>
       <div class="domestic-item-val">${pack===0 ? '¥0' : '¥'+pack.toLocaleString()}</div>
-      <div class="domestic-item-sub">${pack===0 ? '手渡しのため無料' : 'OPP袋・プチプチ・段ボール'}</div>
+      <div class="domestic-item-sub">${pack===0 ? '手渡しのため無料' : '段ボール・ガムテープ購入'<br>'その他同梱物の代金はいただいておりません。'}</div>
     </div>
   `;
 }
