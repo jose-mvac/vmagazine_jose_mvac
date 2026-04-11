@@ -24,6 +24,9 @@
   --warn-border: #C87040;
   --paypay: #D0021B;
   --paypay-light: #FFF0F2;
+  --hand: #2D5A3D;
+  --hand-light: #EAF2ED;
+  --hand-border: #4A8C5F;
   --radius: 10px;
   --radius-lg: 16px;
 }
@@ -60,7 +63,7 @@ header p { font-size: 13px; opacity: 0.8; line-height: 1.6; }
 }
 .field { margin-bottom: 14px; }
 .field:last-child { margin-bottom: 0; }
-.field label { display: block; font-size: 13px; color: var(--text-sub); margin-bottom: 6px; font-weight: 500; }
+.field label { display: block; font-size: 13px; color: var(--text-sub); margin-bottom: 6px; font-weight: 500; line-height: 1.7; }
 select {
   width: 100%;
   height: 44px;
@@ -79,14 +82,35 @@ select {
   transition: border-color 0.15s;
 }
 select:focus { outline: none; border-color: var(--accent-mid); }
-.intl-amount {
+
+/* 国際送料カード */
+.fee-amount {
   font-family: 'DM Mono', monospace;
   font-size: 32px;
   font-weight: 500;
   color: var(--text);
   margin: 4px 0 6px;
 }
-.intl-break { font-size: 12px; color: var(--text-sub); }
+.fee-break { font-size: 12px; color: var(--text-sub); }
+
+/* 国内送料カード */
+.domestic-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 4px; }
+.domestic-item {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px 14px;
+}
+.domestic-item-label { font-size: 11px; color: var(--text-hint); margin-bottom: 4px; font-weight: 500; }
+.domestic-item-val {
+  font-family: 'DM Mono', monospace;
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--text);
+}
+.domestic-item-sub { font-size: 11px; color: var(--text-sub); margin-top: 3px; }
+
+/* 配送方法 */
 .method-grid { display: grid; gap: 10px; }
 .method-card {
   border: 1.5px solid var(--border);
@@ -114,7 +138,7 @@ select:focus { outline: none; border-color: var(--accent-mid); }
 .method-price { font-family: 'DM Mono', monospace; font-size: 22px; font-weight: 500; color: var(--text); margin-bottom: 4px; }
 .method-note { font-size: 11px; color: var(--text-sub); line-height: 1.6; }
 
-/* 都道府県パネル（宅急便直接選択時のみ表示） */
+/* 都道府県パネル */
 .pref-panel {
   display: none;
   background: var(--bg);
@@ -125,12 +149,7 @@ select:focus { outline: none; border-color: var(--accent-mid); }
 }
 .pref-panel.visible { display: block; }
 .pref-panel label { display: block; font-size: 12px; color: var(--text-sub); margin-bottom: 6px; font-weight: 500; }
-.pref-note {
-  font-size: 12px;
-  color: var(--accent);
-  font-weight: 500;
-  margin-top: 8px;
-}
+.pref-note { font-size: 12px; color: var(--accent); font-weight: 500; margin-top: 8px; }
 
 /* 合計ボックス */
 .total-box {
@@ -142,7 +161,6 @@ select:focus { outline: none; border-color: var(--accent-mid); }
 }
 .total-label { font-size: 12px; color: var(--info); font-weight: 700; letter-spacing: 0.05em; margin-bottom: 8px; }
 .total-amount { font-family: 'DM Mono', monospace; font-size: 38px; font-weight: 500; color: var(--info); margin-bottom: 4px; }
-.total-sub { font-size: 12px; color: var(--info); opacity: 0.8; }
 
 /* 内訳 */
 .divider { border: none; border-top: 1px solid var(--border); margin: 14px 0; }
@@ -162,25 +180,18 @@ select:focus { outline: none; border-color: var(--accent-mid); }
   margin-bottom: 10px;
 }
 .payment-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.payment-box {
-  border-radius: var(--radius);
-  padding: 16px;
-  border: 1.5px solid;
-}
-.payment-box.paypay {
-  background: var(--paypay-light);
-  border-color: var(--paypay);
-}
-.payment-box.furi {
-  background: var(--warn-light);
-  border-color: var(--warn-border);
-}
+.payment-box { border-radius: var(--radius); padding: 16px; border: 1.5px solid; }
+.payment-box.paypay { background: var(--paypay-light); border-color: var(--paypay); }
+.payment-box.furi { background: var(--warn-light); border-color: var(--warn-border); }
+.payment-box.hand-only { background: var(--hand-light); border-color: var(--hand-border); grid-column: 1 / -1; }
 .payment-box-label { font-size: 11px; font-weight: 700; margin-bottom: 4px; }
 .payment-box.paypay .payment-box-label { color: var(--paypay); }
 .payment-box.furi .payment-box-label { color: var(--warn); }
+.payment-box.hand-only .payment-box-label { color: var(--hand); }
 .payment-box-amount { font-family: 'DM Mono', monospace; font-size: 24px; font-weight: 500; margin-bottom: 4px; }
 .payment-box.paypay .payment-box-amount { color: var(--paypay); }
 .payment-box.furi .payment-box-amount { color: var(--warn); }
+.payment-box.hand-only .payment-box-amount { color: var(--hand); }
 .payment-box-note { font-size: 10px; color: var(--text-hint); line-height: 1.5; }
 
 footer { text-align: center; font-size: 11px; color: var(--text-hint); padding: 20px 16px 0; line-height: 1.8; }
@@ -199,7 +210,12 @@ footer { text-align: center; font-size: 11px; color: var(--text-hint); padding: 
   <div class="card">
     <p class="card-title">Step 1 　購入内容を選んでください。</p>
     <div class="field">
-      <label>雑誌の冊数　</by><br>※A/B/Cセット（雑誌＆特典）で申し込みの方。<br>※冊数のため、Cセットを1つ申し込まれた方は”2冊”を選択してください。</label>
+      <label>雑誌の冊数<br>
+        <span style="font-weight:400;font-size:12px;color:var(--text-hint)">
+          ※A/B/Cセット（雑誌＆特典）で申し込みの方。<br>
+          ※Cセットを1つ申し込まれた方は「2冊」を選択してください。
+        </span>
+      </label>
       <select id="magCount">
         <option value="0">0冊（特典のみ）</option>
         <option value="1" selected>1冊</option>
@@ -209,7 +225,9 @@ footer { text-align: center; font-size: 11px; color: var(--text-hint); padding: 
       </select>
     </div>
     <div class="field">
-      <label>特典セット数　※雑誌は不要で特典だけを申し込まれた方</label>
+      <label>特典セット数<br>
+        <span style="font-weight:400;font-size:12px;color:var(--text-hint)">※雑誌は不要で特典だけを申し込まれた方</span>
+      </label>
       <select id="bonusCount">
         <option value="0" selected>なし</option>
         <option value="1">1セット</option>
@@ -220,22 +238,28 @@ footer { text-align: center; font-size: 11px; color: var(--text-hint); padding: 
     </div>
   </div>
 
+  <!-- 国際送料 -->
   <div class="card">
     <p class="card-title">Step 2 　あなたの国際送料（按分）はこちらです。</p>
-    <div class="intl-amount" id="intlFee">¥390</div>
-    <div class="intl-break" id="intlBreak"></div>
+    <div class="fee-amount" id="intlFee">¥390</div>
+    <div class="fee-break" id="intlBreak"></div>
   </div>
 
+  <!-- 配送方法 -->
   <div class="card">
     <p class="card-title">Step 3 　国内配送方法をお選びください。</p>
     <div class="method-grid" id="methodGrid"></div>
-
-    <!-- 宅急便（直接）選択時のみ表示 -->
     <div class="pref-panel" id="prefPanel">
       <label>お届け先（都道府県）</label>
       <select id="prefSelect"></select>
       <div class="pref-note" id="prefNote"></div>
     </div>
+  </div>
+
+  <!-- 国内送料・梱包費 -->
+  <div class="card" id="domesticCard">
+    <p class="card-title">国内配送料・梱包費</p>
+    <div class="domestic-grid" id="domesticGrid"></div>
   </div>
 
   <div id="totalArea"></div>
@@ -280,7 +304,6 @@ const PREFS = [
   {n:'沖縄県',a:'okinawa'},
 ];
 
-// 都道府県プルダウン生成
 const sel = document.getElementById('prefSelect');
 PREFS.forEach((p,i)=>{
   const o = document.createElement('option');
@@ -292,26 +315,34 @@ PREFS.forEach((p,i)=>{
 let selectedKey = null;
 
 function getArea(){ return PREFS[parseInt(sel.value)].a; }
-function packCost(mag){ return mag===0?30:100; }
+
+function packCost(mag, isHandover){
+  if(isHandover) return 0;
+  return mag===0 ? 30 : 100;
+}
+
 function calcIntl(mag,bonus){ return INTL.mag[mag]+INTL.bonus[bonus]; }
 
+const FURI_BASE = 850;
+const FURI_DISPLAY = Math.ceil(FURI_BASE/0.95); // ¥895
+
 function getMethods(mag){
-  const fee80 = AREA_FEE_80[getArea()]; // 宅急便直接用（都道府県連動）
-  const furiFee80 = 850; // フリマは全国均一80サイズ
-  const furiDisplay = Math.ceil(furiFee80/0.95);
+  const fee80 = AREA_FEE_80[getArea()];
 
   if(mag===0) return [
-    {key:'mini',  name:'ミニレター',            delivery:63,       furi:false, note:'追跡なし・補償なし　'},
-    {key:'click', name:'クリックポスト',         delivery:185,      furi:false, note:'追跡あり・全国均一　', featured:true},
+    {key:'mini',  name:'ミニレター',            delivery:63,          furi:false, note:'追跡なし・補償なし'},
+    {key:'click', name:'クリックポスト',         delivery:185,         furi:false, note:'追跡あり・全国均一', featured:true},
   ];
   if(mag===1) return [
-    {key:'letter',name:'レターパックプラス',     delivery:600,      furi:false, note:'追跡あり・全国均一　対面受け取り　寸法ギリギリのため折れリスクあり'},
-    {key:'furi',  name:'宅急便（Yahoo!フリマ）', delivery:furiFee80, furiDisplay:furiDisplay, furi:true, note:'追跡あり・匿名配送　全国均一　配送にお時間をいただく場合があります。', featured:true},
-    {key:'takku', name:'宅急便（着払い）',         delivery:fee80,    furi:false, note:'追跡あり　都道府県により料金が変わります', hasPref:true},
+    {key:'letter',name:'レターパックプラス',     delivery:600,         furi:false, note:'追跡あり・全国均一　対面受け取り　寸法ギリギリのため折れリスクあり'},
+    {key:'furi',  name:'宅急便（Yahoo!フリマ）', delivery:FURI_DISPLAY, furi:true,  note:'追跡あり・匿名配送　全国均一　配送にお時間をいただく場合があります。', featured:true},
+    {key:'takku', name:'宅急便（着払い）',        delivery:fee80,       furi:false, note:'追跡あり　都道府県により料金が変わります', hasPref:true},
   ];
+  // 2冊以上
   return [
-    {key:'furi',  name:'宅急便（Yahoo!フリマ）', delivery:furiFee80, furiDisplay:furiDisplay, furi:true, note:'追跡あり・匿名配送　全国均一　配送にお時間をいただく場合があります。', featured:true},
-    {key:'takku', name:'宅急便（着払い）',         delivery:fee80,    furi:false, note:'追跡あり　都道府県により料金が変わります', hasPref:true},
+    {key:'furi',  name:'宅急便（Yahoo!フリマ）', delivery:FURI_DISPLAY, furi:true,  note:'追跡あり・匿名配送　全国均一　配送にお時間をいただく場合があります。', featured:true},
+    {key:'takku', name:'宅急便（着払い）',        delivery:fee80,       furi:false, note:'追跡あり　都道府県により料金が変わります', hasPref:true},
+    {key:'hand',  name:'都内手渡し',             delivery:0,           furi:false, note:'梱包料なし　日時・場所は別途ご相談', isHandover:true},
   ];
 }
 
@@ -319,18 +350,17 @@ function render(){
   const mag   = parseInt(document.getElementById('magCount').value);
   const bonus = parseInt(document.getElementById('bonusCount').value);
   const intl  = calcIntl(mag,bonus);
-  const pack  = packCost(mag);
 
-  // 国際送料
   document.getElementById('intlFee').textContent = '¥'+intl.toLocaleString();
   let bt = `雑誌${mag}冊 ¥${INTL.mag[mag].toLocaleString()}`;
   bt += bonus>0 ? `　＋　特典${bonus}セット ¥${INTL.bonus[bonus]}` : '　特典なし ¥0';
   document.getElementById('intlBreak').textContent = bt;
 
-  // 配送方法カード
   const methods = getMethods(mag);
   const grid = document.getElementById('methodGrid');
   grid.innerHTML = '';
+
+  // 列数：3列 or 2列
   grid.style.gridTemplateColumns = methods.length===3 ? '1fr 1fr 1fr' : '1fr 1fr';
 
   let defaultM = null;
@@ -338,23 +368,18 @@ function render(){
     const isSelected = selectedKey ? m.key===selectedKey : !!m.featured;
     const card = document.createElement('div');
     card.className = 'method-card'+(m.featured?' featured':'')+(isSelected?' selected':'');
-    const dispPrice = m.furi ? m.furiDisplay : m.delivery;
     card.innerHTML = `
       ${m.featured?'<div class="badge">おすすめ</div>':''}
       <div class="method-name">${m.name}</div>
-      <div class="method-price">¥${dispPrice.toLocaleString()}</div>
+      <div class="method-price">${m.isHandover ? '¥0' : m.hasPref ? '別途精算' : '¥'+m.delivery.toLocaleString()}</div>
       <div class="method-note">${m.note}</div>
     `;
     card.addEventListener('click',()=>{
       selectedKey = m.key;
       document.querySelectorAll('.method-card').forEach(c=>c.classList.remove('selected'));
       card.classList.add('selected');
-      // 都道府県パネルの表示切替
       updatePrefPanel(m);
-      renderTotal(m, calcIntl(
-        parseInt(document.getElementById('magCount').value),
-        parseInt(document.getElementById('bonusCount').value)
-      ), packCost(parseInt(document.getElementById('magCount').value)));
+      doRenderAll(m);
     });
     grid.appendChild(card);
     if(isSelected) defaultM = m;
@@ -362,7 +387,19 @@ function render(){
 
   if(!defaultM){ defaultM=methods[0]; selectedKey=methods[0].key; }
   updatePrefPanel(defaultM);
-  renderTotal(defaultM, intl, pack);
+  doRenderAll(defaultM);
+}
+
+function doRenderAll(m){
+  const mag   = parseInt(document.getElementById('magCount').value);
+  const bonus = parseInt(document.getElementById('bonusCount').value);
+  const intl  = calcIntl(mag,bonus);
+  const pack  = packCost(mag, m.isHandover);
+  // 着払いは現地払いのため合計に含めない
+  const delivery = m.hasPref ? 0 : (m.isHandover ? 0 : m.delivery);
+  const deliveryDisplay = m.hasPref ? AREA_FEE_80[getArea()] : (m.isHandover ? 0 : m.delivery);
+  renderDomesticCard(deliveryDisplay, pack, m);
+  renderTotal(m, intl, delivery, pack);
 }
 
 function updatePrefPanel(m){
@@ -378,18 +415,37 @@ function updatePrefPanel(m){
 function updatePrefNote(){
   const area = getArea();
   const fee  = AREA_FEE_80[area];
-  document.getElementById('prefNote').textContent =
-    `${AREA_LABEL[area]}エリア：¥${fee.toLocaleString()}`;
+  document.getElementById('prefNote').textContent = `${AREA_LABEL[area]}エリア：¥${fee.toLocaleString()}`;
 }
 
-function renderTotal(m, intl, pack){
-  const el = document.getElementById('totalArea');
+function renderDomesticCard(delivery, pack, m){
+  const dg = document.getElementById('domesticGrid');
+  const areaStr = m.hasPref ? `（${AREA_LABEL[getArea()]}エリア）` : '';
 
-  // 宅急便（直接）の場合は都道府県連動
-  const delivery = m.hasPref ? AREA_FEE_80[getArea()] : m.delivery;
+  let deliveryLabel = '国内配送料';
+  if(m.isHandover) deliveryLabel = '国内配送料';
+
+  dg.innerHTML = `
+    <div class="domestic-item">
+      <div class="domestic-item-label">国内配送料${areaStr}</div>
+      <div class="domestic-item-val">${m.isHandover ? '¥0' : m.hasPref ? '別途精算' : '¥'+delivery.toLocaleString()}</div>
+      <div class="domestic-item-sub">${m.isHandover ? '都内手渡しのため無料' : m.hasPref ? '着払いのため合計に含みません' : m.name}</div>
+    </div>
+    <div class="domestic-item">
+      <div class="domestic-item-label">梱包費</div>
+      <div class="domestic-item-val">${pack===0 ? '¥0' : '¥'+pack.toLocaleString()}</div>
+      <div class="domestic-item-sub">${pack===0 ? '手渡しのため無料' : 'OPP袋・プチプチ・段ボール'}</div>
+    </div>
+  `;
+}
+
+function renderTotal(m, intl, delivery, pack){
+  const el = document.getElementById('totalArea');
   const grand = intl + delivery + pack;
 
-  // ── 共通：まず総額を出す ──
+  // フリマの場合の実際の送料（手数料なしベース）
+  const furiBase = m.furi ? FURI_BASE : delivery;
+
   let html = `
     <div class="total-box">
       <div class="total-label">合計金額（目安）</div>
@@ -400,9 +456,9 @@ function renderTotal(m, intl, pack){
       <div class="detail-row"><span class="detail-key">国際送料</span><span class="detail-val">¥${intl.toLocaleString()}</span></div>
       <div class="detail-row">
         <span class="detail-key">国内配送${m.hasPref?'（'+AREA_LABEL[getArea()]+'エリア）':''}</span>
-        <span class="detail-val">¥${delivery.toLocaleString()}</span>
+        <span class="detail-val" style="${m.hasPref?'color:var(--text-hint);font-size:12px;':''}">  ${m.hasPref?'着払い（現地精算）':m.isHandover?'¥0':'¥'+delivery.toLocaleString()}</span>
       </div>
-      <div class="detail-row"><span class="detail-key">梱包費</span><span class="detail-val">¥${pack}</span></div>
+      <div class="detail-row"><span class="detail-key">梱包費</span><span class="detail-val">${pack===0?'¥0':'¥'+pack.toLocaleString()}</span></div>
       <div class="divider"></div>
       <div class="detail-row">
         <span class="detail-key" style="font-weight:700;color:var(--text)">合計</span>
@@ -411,9 +467,10 @@ function renderTotal(m, intl, pack){
     </div>
   `;
 
-  // ── フリマ経由の場合：入金方法の分割を表示 ──
   if(m.furi){
-    const furiAmount = 950; // フリマサイトへ支払う固定額
+    // フリマ経由：PayPay＋フリマに分割
+    // フリマ出品額 = FURI_DISPLAY（¥895）、PayPay = grand - FURI_DISPLAY
+    const furiAmount  = FURI_DISPLAY;
     const paypayAmount = grand - furiAmount;
     html += `
       <div class="payment-section">
@@ -422,12 +479,40 @@ function renderTotal(m, intl, pack){
           <div class="payment-box paypay">
             <div class="payment-box-label">PayPay送金</div>
             <div class="payment-box-amount">¥${paypayAmount.toLocaleString()}</div>
-            <div class="payment-box-note">合計 ¥${grand.toLocaleString()} のうち<br>フリマ出品分を除いた金額。<br>こちらを銀鮭PayPay宛にご送金ください。</div>
+            <div class="payment-box-note">合計 ¥${grand.toLocaleString()} のうち<br>フリマ出品分を除いた金額。<br>銀鮭PayPay宛にご送金ください。</div>
           </div>
           <div class="payment-box furi">
             <div class="payment-box-label">Yahoo!フリマ購入</div>
             <div class="payment-box-amount">¥${furiAmount.toLocaleString()}</div>
-            <div class="payment-box-note">フォームご入力+PayPay送金確認後、個別にフリマサイトリンクをお送りします。<br>¥${furiAmount.toLocaleString()}であることをお確かめの上購入ください。</div>
+            <div class="payment-box-note">フォームご入力＋PayPay送金確認後、個別にフリマサイトリンクをお送りします。<br>¥${furiAmount.toLocaleString()}であることをお確かめの上購入ください。</div>
+          </div>
+        </div>
+      </div>
+    `;
+  } else if(m.isHandover){
+    // 手渡し：PayPayのみ
+    html += `
+      <div class="payment-section">
+        <p class="payment-title">入金方法</p>
+        <div class="payment-grid">
+          <div class="payment-box paypay hand-only">
+            <div class="payment-box-label">PayPay送金</div>
+            <div class="payment-box-amount">¥${grand.toLocaleString()}</div>
+            <div class="payment-box-note">合計金額をそのまま銀鮭PayPay宛にご送金ください。<br>日時・場所は別途ご相談します。</div>
+          </div>
+        </div>
+      </div>
+    `;
+  } else {
+    // 通常発送：PayPayのみ
+    html += `
+      <div class="payment-section">
+        <p class="payment-title">入金方法</p>
+        <div class="payment-grid">
+          <div class="payment-box paypay hand-only">
+            <div class="payment-box-label">PayPay送金</div>
+            <div class="payment-box-amount">¥${grand.toLocaleString()}</div>
+            <div class="payment-box-note">合計金額を銀鮭PayPay宛にご送金ください。</div>
           </div>
         </div>
       </div>
@@ -441,12 +526,10 @@ document.getElementById('magCount').addEventListener('change',()=>{ selectedKey=
 document.getElementById('bonusCount').addEventListener('change', render);
 document.getElementById('prefSelect').addEventListener('change',()=>{
   updatePrefNote();
-  const methods = getMethods(parseInt(document.getElementById('magCount').value));
+  const mag = parseInt(document.getElementById('magCount').value);
+  const methods = getMethods(mag);
   const current = methods.find(m=>m.key===selectedKey) || methods[0];
-  renderTotal(current,
-    calcIntl(parseInt(document.getElementById('magCount').value), parseInt(document.getElementById('bonusCount').value)),
-    packCost(parseInt(document.getElementById('magCount').value))
-  );
+  doRenderAll(current);
 });
 render();
 </script>
