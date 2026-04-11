@@ -196,7 +196,7 @@ footer { text-align: center; font-size: 11px; color: var(--text-hint); padding: 
 <div class="container">
 
   <div class="card">
-    <p class="card-title">Step 1 　購入内容</p>
+    <p class="card-title">Step 1 　購入内容を選んでください。</p>
     <div class="field">
       <label>雑誌の冊数</label>
       <select id="magCount">
@@ -220,13 +220,13 @@ footer { text-align: center; font-size: 11px; color: var(--text-hint); padding: 
   </div>
 
   <div class="card">
-    <p class="card-title">Step 2 　国際送料（按分）</p>
+    <p class="card-title">Step 2 　あなたの国際送料（按分）はこちらです。</p>
     <div class="intl-amount" id="intlFee">¥390</div>
     <div class="intl-break" id="intlBreak"></div>
   </div>
 
   <div class="card">
-    <p class="card-title">Step 3 　国内配送方法を選ぶ</p>
+    <p class="card-title">Step 3 　国内配送方法をお選びください。</p>
     <div class="method-grid" id="methodGrid"></div>
 
     <!-- 宅急便（直接）選択時のみ表示 -->
@@ -412,7 +412,7 @@ function renderTotal(m, intl, pack){
 
   // ── フリマ経由の場合：入金方法の分割を表示 ──
   if(m.furi){
-    const furiAmount = 1000; // フリマサイトへ支払う固定額
+    const furiAmount = 950; // フリマサイトへ支払う固定額
     const paypayAmount = grand - furiAmount;
     html += `
       <div class="payment-section">
