@@ -240,14 +240,14 @@ footer { text-align: center; font-size: 11px; color: var(--text-hint); padding: 
 
   <!-- 国際送料 -->
   <div class="card">
-    <p class="card-title">Step 2 　あなたの国際送料（按分）はこちらです。</p>
+    <p class="card-title">あなたの国際送料（按分）はこちらです。</p>
     <div class="fee-amount" id="intlFee">¥390</div>
     <div class="fee-break" id="intlBreak"></div>
   </div>
 
   <!-- 配送方法 -->
   <div class="card">
-    <p class="card-title">Step 3 　国内配送方法をお選びください。</p>
+    <p class="card-title">Step 2 　国内配送方法をお選びください。</p>
     <div class="method-grid" id="methodGrid"></div>
     <div class="pref-panel" id="prefPanel">
       <label>お届け先（都道府県）</label>
@@ -258,7 +258,7 @@ footer { text-align: center; font-size: 11px; color: var(--text-hint); padding: 
 
   <!-- 国内送料・梱包費 -->
   <div class="card" id="domesticCard">
-    <p class="card-title">国内配送料・梱包費</p>
+    <p class="card-title">あなたの国内配送料はこちらです。</p>
     <div class="domestic-grid" id="domesticGrid"></div>
   </div>
 
@@ -434,7 +434,7 @@ function renderDomesticCard(delivery, pack, m){
     <div class="domestic-item">
       <div class="domestic-item-label">梱包費</div>
       <div class="domestic-item-val">${pack===0 ? '¥0' : '¥'+pack.toLocaleString()}</div>
-      <div class="domestic-item-sub">${pack===0 ? '手渡しのため無料' : '段ボール・ガムテープ購入。その他同梱物の代金はいただいておりません。'}</div>
+      <div class="domestic-item-sub">${pack===0 ? '手渡しのため無料' : '封筒（特典のみの場合）・段ボール・ガムテープ（雑誌こみ）購入。その他同梱物の費用や代行費などはいただいておりません。'}</div>
     </div>
   `;
 }
