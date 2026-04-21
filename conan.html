@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>名探偵コナン映画ランキング</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700;900&family=Bebas+Neue&family=Noto+Sans+JP:wght@300;400;700&display=swap');
+
+  :root {
+    --red: #C8102E;
+    --dark: #0a0a0f;
+    --darker: #050508;
+    --gold: #D4AF37;
+    --silver: #A8A9AD;
+    --text: #e8e4dc;
+    --muted: #6b6b7a;
+    --card-bg: #0f0f18;
+    --border: rgba(200,16,46,0.3);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--darker);
+    color: var(--text);
+    font-family: 'Noto Sans JP', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Background grid */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(200,16,46,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(200,16,46,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 40px 20px 80px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Header */
+  header {
+    text-align: center;
+    margin-bottom: 60px;
+  }
+
+  .header-label {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 11px;
+    letter-spacing: 6px;
+    color: var(--red);
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  h1 {
+    font-family: 'Noto Serif JP', serif;
+    font-size: clamp(22px, 5vw, 38px);
+    font-weight: 900;
+    letter-spacing: 0.05em;
+    line-height: 1.2;
+    color: var(--text);
+  }
+
+  h1 span {
+    color: var(--red);
+  }
+
+  .header-line {
+    width: 80px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--red), transparent);
+    margin: 20px auto;
+  }
+
+  .header-sub {
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 2px;
+  }
+
+  /* Progress bar */
+  .progress-wrap {
+    margin-bottom: 48px;
+  }
+
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 13px;
+  }
+
+  .progress-track {
+    height: 3px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--red), #ff4060);
+    border-radius: 2px;
+    transition: width 0.6s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  /* Battle card */
+  .battle-section {
+    margin-bottom: 40px;
+  }
+
+  .vs-label {
+    text-align: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 11px;
+    letter-spacing: 5px;
+    color: var(--muted);
+    margin-bottom: 24px;
+  }
+
+  .battle-grid {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 16px;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .movie-card {
+    background: var(--card-bg);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 4px;
+    padding: 28px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
+    min-height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .movie-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(200,16,46,0) 0%, rgba(200,16,46,0.08) 100%);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .movie-card:hover {
+    border-color: var(--red);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(200,16,46,0.2);
+  }
+
+  .movie-card:hover::before { opacity: 1; }
+
+  .movie-card:active { transform: translateY(0); }
+
+  .movie-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--red);
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .movie-title {
+    font-family: 'Noto Serif JP', serif;
+    font-size: clamp(13px, 2.5vw, 17px);
+    font-weight: 700;
+    line-height: 1.5;
+    color: var(--text);
+  }
+
+  .vs-divider {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    color: var(--muted);
+    letter-spacing: 2px;
+    text-align: center;
+    user-select: none;
+  }
+
+  /* Tie button */
+  .tie-btn-wrap {
+    text-align: center;
+  }
+
+  .tie-btn {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--muted);
+    padding: 10px 28px;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 12px;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.2s;
+    border-radius: 2px;
+  }
+
+  .tie-btn:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+
+  /* Win animation */
+  @keyframes flash-win {
+    0% { background: rgba(200,16,46,0.3); }
+    100% { background: transparent; }
+  }
+
+  .movie-card.selected {
+    animation: flash-win 0.4s ease forwards;
+    border-color: var(--red);
+  }
+
+  /* Results */
+  .results-section {
+    display: none;
+    animation: fadeIn 0.8s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .results-header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .results-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 11px;
+    letter-spacing: 6px;
+    color: var(--red);
+    margin-bottom: 10px;
+  }
+
+  .results-h2 {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 24px;
+    font-weight: 900;
+  }
+
+  .ranking-list {
+    list-style: none;
+  }
+
+  .ranking-item {
+    display: grid;
+    grid-template-columns: 56px 1fr auto;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    animation: slideIn 0.4s ease both;
+  }
+
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateX(-10px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  .rank-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    text-align: right;
+    line-height: 1;
+  }
+
+  .rank-1 .rank-num { color: var(--gold); }
+  .rank-2 .rank-num { color: var(--silver); }
+  .rank-3 .rank-num { color: #CD7F32; }
+  .rank-other .rank-num { color: var(--muted); font-size: 18px; }
+
+  .rank-medal {
+    font-size: 20px;
+    display: block;
+    text-align: right;
+  }
+
+  .rank-title-text {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 15px;
+    font-weight: 700;
+  }
+
+  .rank-score {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 13px;
+    letter-spacing: 1px;
+    color: var(--muted);
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  .score-bar {
+    height: 2px;
+    background: rgba(255,255,255,0.05);
+    margin-top: 4px;
+    border-radius: 1px;
+    overflow: hidden;
+  }
+
+  .score-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--red), #ff4060);
+    border-radius: 1px;
+  }
+
+  .restart-btn {
+    display: block;
+    margin: 48px auto 0;
+    background: transparent;
+    border: 1px solid var(--red);
+    color: var(--red);
+    padding: 14px 40px;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 13px;
+    letter-spacing: 3px;
+    cursor: pointer;
+    transition: all 0.2s;
+    border-radius: 2px;
+  }
+
+  .restart-btn:hover {
+    background: var(--red);
+    color: white;
+  }
+
+  /* Separator medal for tied groups */
+  .rank-group-label {
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--muted);
+    font-family: 'Bebas Neue', sans-serif;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <span class="header-label">Detective Conan Movie Ranking</span>
+    <h1>名探偵コナン<br><span>映画ランキング</span></h1>
+    <div class="header-line"></div>
+    <p class="header-sub">２作品を比べて、あなただけのランキングを作ろう</p>
+  </header>
+
+  <div id="sort-section">
+    <div class="progress-wrap">
+      <div class="progress-label">
+        <span>PROGRESS</span>
+        <span id="progress-text">0 / 0</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+      </div>
+    </div>
+
+    <div class="battle-section">
+      <p class="vs-label">どちらが好きですか？</p>
+      <div class="battle-grid">
+        <div class="movie-card" id="card-a" onclick="choose('a')">
+          <div>
+            <span class="movie-num" id="num-a">NO.1</span>
+            <div class="movie-title" id="title-a">—</div>
+          </div>
+        </div>
+        <div class="vs-divider">VS</div>
+        <div class="movie-card" id="card-b" onclick="choose('b')">
+          <div>
+            <span class="movie-num" id="num-b">NO.2</span>
+            <div class="movie-title" id="title-b">—</div>
+          </div>
+        </div>
+      </div>
+      <div class="tie-btn-wrap">
+        <button class="tie-btn" onclick="choose('tie')">どちらも同じくらい好き</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="results-section" id="results-section">
+    <div class="results-header">
+      <div class="results-title">FINAL RANKING</div>
+      <div class="results-h2">あなたのランキング</div>
+    </div>
+    <ol class="ranking-list" id="ranking-list"></ol>
+    <button class="restart-btn" onclick="restart()">もう一度やり直す</button>
+  </div>
+</div>
+
+<script>
+const MOVIES = [
+  { id: 1, title: "時計じかけの摩天楼" },
+  { id: 2, title: "14番目の標的" },
+  { id: 3, title: "世紀末の魔術師" },
+  { id: 4, title: "瞳の中の暗殺者" },
+  { id: 5, title: "天国へのカウントダウン" },
+  { id: 6, title: "ベイカー街の亡霊" },
+  { id: 7, title: "迷宮の十字路" },
+  { id: 8, title: "銀翼の奇術師" },
+  { id: 9, title: "水平線上の陰謀" },
+  { id: 10, title: "探偵たちの鎮魂歌" },
+  { id: 11, title: "紺碧の棺" },
+  { id: 12, title: "戦慄の楽譜" },
+  { id: 13, title: "漆黒の追跡者" },
+  { id: 14, title: "天空の難破船" },
+  { id: 15, title: "沈黙の15分" },
+  { id: 16, title: "11人目のストライカー" },
+  { id: 17, title: "絶海の探偵" },
+  { id: 18, title: "異次元狙撃手" },
+  { id: 19, title: "業火の向日葵" },
+  { id: 20, title: "純黒の悪夢" },
+  { id: 21, title: "から紅の恋歌" },
+  { id: 22, title: "ゼロの執行人" },
+  { id: 23, title: "紺青の拳" },
+  { id: 24, title: "緋色の弾丸" },
+  { id: 25, title: "ハロウィンの花嫁" },
+  { id: 26, title: "黒鉄の魚影" },
+  { id: 27, title: "100万ドルの五稜星" },
+  { id: 28, title: "隻眼の残像" },
+  { id: 29, title: "ハイウェイの堕天使" },
+];
+
+// Elo-based sorting with merge sort comparison queue
+let scores = {};
+let comparisons = [];
+let compIndex = 0;
+let totalComps = 0;
+
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function buildComparisonQueue(items) {
+  // Merge sort style comparison queue
+  const queue = [];
+  function mergeSort(arr) {
+    if (arr.length <= 1) return arr;
+    const mid = Math.floor(arr.length / 2);
+    const left = mergeSort(arr.slice(0, mid));
+    const right = mergeSort(arr.slice(mid));
+    return merge(left, right, queue);
+  }
+  function merge(left, right, q) {
+    const result = [];
+    let i = 0, j = 0;
+    while (i < left.length && j < right.length) {
+      q.push([left[i], right[j]]);
+      // Placeholder — actual result applied during comparison
+      result.push(left[i]); // Will be re-evaluated
+      i++; j++;
+    }
+    return result.concat(left.slice(i)).concat(right.slice(j));
+  }
+
+  // Use round-robin pairings for a thorough sort
+  const pairs = [];
+  const shuffled = shuffle([...items]);
+
+  // Generate all needed pairs via tournament style
+  function genPairs(arr) {
+    if (arr.length <= 1) return;
+    const left = arr.slice(0, Math.floor(arr.length / 2));
+    const right = arr.slice(Math.floor(arr.length / 2));
+    for (let i = 0; i < Math.min(left.length, right.length); i++) {
+      pairs.push([left[i], right[i]]);
+    }
+    genPairs(left);
+    genPairs(right);
+  }
+
+  genPairs(shuffled);
+
+  // Add some random additional comparisons for better accuracy
+  for (let k = 0; k < Math.floor(items.length * 0.5); k++) {
+    const a = shuffled[Math.floor(Math.random() * shuffled.length)];
+    const b = shuffled[Math.floor(Math.random() * shuffled.length)];
+    if (a !== b) pairs.push([a, b]);
+  }
+
+  return pairs;
+}
+
+function init() {
+  scores = {};
+  MOVIES.forEach(m => { scores[m.id] = 1000; });
+
+  const ids = MOVIES.map(m => m.id);
+  comparisons = buildComparisonQueue(ids);
+  compIndex = 0;
+  totalComps = comparisons.length;
+
+  document.getElementById('results-section').style.display = 'none';
+  document.getElementById('sort-section').style.display = 'block';
+
+  showNext();
+}
+
+function showNext() {
+  if (compIndex >= comparisons.length) {
+    showResults();
+    return;
+  }
+
+  const [idA, idB] = comparisons[compIndex];
+  const mA = MOVIES.find(m => m.id === idA);
+  const mB = MOVIES.find(m => m.id === idB);
+
+  document.getElementById('num-a').textContent = `NO.${String(mA.id).padStart(2,'0')}`;
+  document.getElementById('title-a').textContent = mA.title;
+  document.getElementById('num-b').textContent = `NO.${String(mB.id).padStart(2,'0')}`;
+  document.getElementById('title-b').textContent = mB.title;
+
+  updateProgress();
+}
+
+function updateProgress() {
+  const pct = Math.round((compIndex / totalComps) * 100);
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-text').textContent = `${compIndex} / ${totalComps}`;
+}
+
+function choose(side) {
+  const [idA, idB] = comparisons[compIndex];
+  const K = 32;
+  const sa = scores[idA], sb = scores[idB];
+  const ea = 1 / (1 + Math.pow(10, (sb - sa) / 400));
+  const eb = 1 - ea;
+
+  let ra, rb;
+  if (side === 'a') { ra = 1; rb = 0; }
+  else if (side === 'b') { ra = 0; rb = 1; }
+  else { ra = 0.5; rb = 0.5; }
+
+  scores[idA] = sa + K * (ra - ea);
+  scores[idB] = sb + K * (rb - eb);
+
+  // Flash animation
+  const card = side === 'tie' ? null : document.getElementById('card-' + side);
+  if (card) {
+    card.classList.add('selected');
+    setTimeout(() => card.classList.remove('selected'), 400);
+  }
+
+  compIndex++;
+  setTimeout(showNext, side === 'tie' ? 0 : 200);
+}
+
+function showResults() {
+  document.getElementById('sort-section').style.display = 'none';
+  const res = document.getElementById('results-section');
+  res.style.display = 'block';
+
+  const sorted = [...MOVIES].sort((a, b) => scores[b.id] - scores[a.id]);
+  const maxScore = scores[sorted[0].id];
+  const minScore = scores[sorted[sorted.length - 1].id];
+
+  const list = document.getElementById('ranking-list');
+  list.innerHTML = '';
+
+  sorted.forEach((m, i) => {
+    const rank = i + 1;
+    const score = Math.round(scores[m.id]);
+    const pct = Math.round(((scores[m.id] - minScore) / (maxScore - minScore)) * 100);
+
+    const rankClass = rank === 1 ? 'rank-1' : rank === 2 ? 'rank-2' : rank === 3 ? 'rank-3' : 'rank-other';
+    const medal = rank === 1 ? '🥇' : rank === 2 ? '🥈' : rank === 3 ? '🥉' : '';
+
+    const li = document.createElement('li');
+    li.className = `ranking-item ${rankClass}`;
+    li.style.animationDelay = `${i * 0.04}s`;
+    li.innerHTML = `
+      <div class="rank-num">
+        ${medal ? `<span class="rank-medal">${medal}</span>` : rank}
+      </div>
+      <div>
+        <div class="rank-title-text">${m.title}</div>
+        <div class="score-bar"><div class="score-fill" style="width:${pct}%"></div></div>
+      </div>
+      <div class="rank-score">
+        <div>NO.${String(m.id).padStart(2,'0')}</div>
+        <div>${score}pt</div>
+      </div>
+    `;
+    list.appendChild(li);
+  });
+}
+
+function restart() {
+  init();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+init();
+</script>
+</body>
+</html>
