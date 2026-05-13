@@ -121,7 +121,6 @@ select:focus { outline: none; border-color: var(--accent-mid); }
 }
 .method-card:hover { border-color: var(--border-strong); }
 .method-card.selected { border-color: var(--accent); background: var(--accent-light); }
-.method-card.featured { border-color: var(--accent-mid); }
 .badge {
   display: inline-block;
   font-size: 10px;
@@ -334,13 +333,13 @@ function getMethods(mag){
     {key:'click', name:'クリックポスト',         delivery:185,         furi:false, note:'追跡あり・全国均一', featured:true},
   ];
   if(mag===1) return [
-    {key:'furi',  name:'宅急便（Yahoo!フリマ）', delivery:FURI_DISPLAY, furi:true,  note:'追跡あり・匿名配送　全国均一　配送にお時間をいただく場合があります。', featured:true},
-    {key:'takku', name:'宅急便（着払い）',        delivery:fee80,       furi:false, note:'追跡あり　都道府県により料金が変わります', hasPref:true},
+    {key:'furi',  name:'宅急便（Yahoo!フリマ）', delivery:FURI_DISPLAY, furi:true,  note:'追跡あり・匿名配送　全国均一　配送にお時間をいただく場合があります。'},
+    {key:'takku', name:'宅急便（着払い）',        delivery:fee80,       furi:false, note:'追跡あり　より速くお届けが可能です。都道府県により料金が変わります', hasPref:true},
   ];
   // 2冊以上
   return [
-    {key:'furi',  name:'宅急便（Yahoo!フリマ）', delivery:FURI_DISPLAY, furi:true,  note:'追跡あり・匿名配送　全国均一　配送にお時間をいただく場合があります。', featured:true},
-    {key:'takku', name:'宅急便（着払い）',        delivery:fee80,       furi:false, note:'追跡あり　都道府県により料金が変わります', hasPref:true},
+    {key:'furi',  name:'宅急便（Yahoo!フリマ）', delivery:FURI_DISPLAY, furi:true,  note:'追跡あり・匿名配送　全国均一　配送にお時間をいただく場合があります。'},
+    {key:'takku', name:'宅急便（着払い）',        delivery:fee80,       furi:false, note:'追跡あり　より速くお届けが可能です。都道府県により料金が変わります', hasPref:true},
     {key:'hand',  name:'都内手渡し',             delivery:0,           furi:false, note:'梱包料なし　日時・場所は別途ご相談', isHandover:true},
   ];
 }
@@ -368,7 +367,6 @@ function render(){
     const card = document.createElement('div');
     card.className = 'method-card'+(m.featured?' featured':'')+(isSelected?' selected':'');
     card.innerHTML = `
-      ${m.featured?'<div class="badge">おすすめ</div>':''}
       <div class="method-name">${m.name}</div>
       <div class="method-price">${m.isHandover ? '¥0' : m.hasPref ? '別途精算' : '¥'+m.delivery.toLocaleString()}</div>
       <div class="method-note">${m.note}</div>
